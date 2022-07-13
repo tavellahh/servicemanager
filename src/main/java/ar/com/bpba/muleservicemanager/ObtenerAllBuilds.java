@@ -39,11 +39,6 @@ public class ObtenerAllBuilds {
             }
         });
 
-        for (Value v : values) {
-
-            System.out.println(v.getId());
-
-        }
         return b;
 
     }
