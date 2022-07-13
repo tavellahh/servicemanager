@@ -5,7 +5,7 @@
 package ar.com.bpba.muleservicemanager;
 
 import ar.com.bpba.muleservicemanager.crearBuild.CrearBuild;
-import ar.com.bpba.muleservicemanager.getBuild.GetBuild;
+import ar.com.bpba.muleservicemanager.getBuild.BuildRoot;
 import ar.com.bpba.muleservicemanager.getBuilds.Builds;
 import ar.com.bpba.muleservicemanager.getBuilds.Value;
 import ar.com.bpba.muleservicemanager.getdetallerelease.DetalleRelease;
@@ -568,8 +568,8 @@ public class ServiceManager extends javax.swing.JFrame {
         sel = jListaIntegracion.getModel().getElementAt(jListaIntegracion.getSelectedIndex());
         obtenerBuildInte(sel);
     }//GEN-LAST:event_jListaIntegracionKeyPressed
-    GetBuild gbDesa;
-    GetBuild gbInte;
+    BuildRoot gbDesa;
+    BuildRoot gbInte;
     private void jButton_guardarDesaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_guardarDesaMouseClicked
 
         try {
@@ -751,12 +751,12 @@ public class ServiceManager extends javax.swing.JFrame {
         obtenerBuildDesa(sel);
     }//GEN-LAST:event_jListDesarrolloKeyPressed
 
-    private GetBuild obtenerBuildDesa(Object sel) {
+    private BuildRoot obtenerBuildDesa(Object sel) {
 
         ObtenerBuild ob = new ObtenerBuild();
-        ob.obtenerBuild(sel);
+//        ob.obtenerBuild(sel);
 
-        gbDesa = ob.obtenerBuild(sel);
+//        gbDesa = ob.obtenerBuild(sel);
 
         jTextField_usuario.setText(gbDesa.getVariables().getUsuario().getValue());
         jTextField_clave.setText(gbDesa.getVariables().getClave().getValue() + "");
@@ -771,12 +771,12 @@ public class ServiceManager extends javax.swing.JFrame {
 
     }
 
-    private GetBuild obtenerBuildInte(Object sel) {
+    private BuildRoot obtenerBuildInte(Object sel) {
 
         ObtenerBuild ob = new ObtenerBuild();
-        ob.obtenerBuild(sel);
+//        ob.obtenerBuild(sel);
 
-        gbInte = ob.obtenerBuild(sel);
+//        gbInte = ob.obtenerBuild(sel);
 
         jTextField_usuario1.setText(gbInte.getVariables().getUsuario().getValue());
         jTextField_clave1.setText(gbInte.getVariables().getClave().getValue() + "");

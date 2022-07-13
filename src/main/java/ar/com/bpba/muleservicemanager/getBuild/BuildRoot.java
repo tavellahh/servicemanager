@@ -3,7 +3,7 @@ package ar.com.bpba.muleservicemanager.getBuild;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class GetBuild{
+public class BuildRoot{
     public ArrayList<Build> build;
     public ArrayList<Option> options;
     public ArrayList<Trigger> triggers;

@@ -4,6 +4,7 @@
  */
 package ar.com.bpba.muleservicemanager;
 
+import ar.com.bpba.muleservicemanager.response.ResponseTFS;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.apache.http.HttpEntity;
@@ -45,21 +46,22 @@ public class ConectorTFS {
 
     public static String get(String url) throws Exception {
         HttpGet httpGet = new HttpGet(url);
-        String salida = "";
+        String rtfs = "";
+        
 
+        
+        
         CredentialsProvider credsProvider = new BasicCredentialsProvider();
         credsProvider.setCredentials(AuthScope.ANY, new NTCredentials(Variables.usuario, Variables.password, "", ""));
         HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(credsProvider).build();
         HttpResponse response = client.execute(httpGet);
 
         HttpEntity responseEntity = response.getEntity();
-
         if (responseEntity != null) {
-            salida = EntityUtils.toString(responseEntity);
-
+            rtfs =EntityUtils.toString(responseEntity);
         }
 
-        return salida;
+        return rtfs;
     }
     
      public static int put(String url, String body) throws Exception {

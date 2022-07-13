@@ -4,14 +4,20 @@
  */
 package ar.com.bpba.muleservicemanager;
 
+import ar.com.bpba.muleservicemanager.getBuild.Build;
+import ar.com.bpba.muleservicemanager.getBuild.BuildRoot;
 import ar.com.bpba.muleservicemanager.getBuilds.Builds;
 import ar.com.bpba.muleservicemanager.getBuilds.Value;
 import ar.com.bpba.muleservicemanager.getdetallerelease.DetalleRelease;
 import ar.com.bpba.muleservicemanager.getdetallerelease.Task;
 import ar.com.bpba.muleservicemanager.getreleases.Releases;
+import ar.com.bpba.muleservicemanager.response.ResponseTFS;
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 
 /**
@@ -27,7 +33,9 @@ public class Iniciador {
         System.out.print("Choose your option : ");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+
+
         String[] options = {"1- Option 1",
             "2- Option 2",
             "3- Option 3",
@@ -59,16 +67,60 @@ public class Iniciador {
     }
 // Options
 
-    private static void option1() {
+    private static void option1() throws Exception {
         System.out.println("Processing . . .");
+
+        int count = 0;
+        int maxTries = 5;
+        int totalHost = 0;
+
         ObtenerAllBuilds oab = new ObtenerAllBuilds();
         Builds builds = oab.obtenerAllBuilds();
-          for (Value v : builds.getValue()) {
+        ObtenerBuild ob = new ObtenerBuild();
 
-            System.out.println(v.getId());
+        int total = builds.value.size();
+
+        for (Value v : builds.getValue()) {
+
+            while (true) { //Reintentar por fallo de conexion
+                System.out.println(v.getId() + " " + total--);
+                try {
+                    BuildRoot buildRoot = null;
+                    try {
+                        buildRoot = new Gson().fromJson(ob.obtenerBuild(v.getId()), BuildRoot.class);
+
+                    } catch (ClassNotFoundException e) {
+                        System.out.println("Id sin informacion: " + v.getId());
+                        break;
+                    }
+                    if (buildRoot.getBuild() != null) {
+                        for (Build build : buildRoot.getBuild()) {
+                            if (build.getInputs().getHost() != null) {
+                                if (build.getInputs().getHost().equals("10.1.13.85")) {
+                                    ++totalHost;
+                                }
+                            }
+                        }
+
+                    }
+                    break;
+                } catch (Exception e) {
+                    System.out.println("Failed -----------------------> : " + v.getId());
+                    try {
+                        Thread.sleep(20000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(ServiceManager.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    if (++count == maxTries) {
+                        System.out.println("Close connection for several errors.");
+                        throw e;
+                    }
+                }
+            }
 
         }
-        
+        System.out.println("Total host to delete: " + totalHost);
     }
 
     private static void option2() {
@@ -79,5 +131,3 @@ public class Iniciador {
         System.out.println("Thanks for choosing option 3");
     }
 }
-
-
